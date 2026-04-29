@@ -22,3 +22,11 @@ spec:
         - --rootpath=/tools/argocd
 
     dex: {}
+
+    configs:
+      cm:
+        resource.exclusions: |
+          - apiGroups:
+            - coordination.k8s.io
+            kinds:
+            - Lease
