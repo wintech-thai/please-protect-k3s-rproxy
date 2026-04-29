@@ -1,0 +1,47 @@
+---
+# Note : Put this in the application folder because we don't want Helm to render it
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alerts-discord-01
+  namespace: monitoring
+spec:
+  receivers:
+    - name: null-notifications
+    - name: 'discord-notifications'
+      #webhookConfigs:
+      #- url: 'http://pp-prod-pp-api.pp-production.svc.cluster.local/api/AlertEvent/org/default/action/Notify'
+  route:
+    groupBy:
+      - alertname
+    matchers:
+      - matchType: =~
+        name: alertname
+        value: .+
+    groupInterval: 5m
+    groupWait: 30s
+    receiver: null-notifications
+    repeatInterval: 4h
+    routes:
+      - groupBy:
+          - alertname
+        matchers:
+          - matchType: =~
+            name: alertname
+            value: 'KubeControllerManagerDown|KubeProxyDown|KubeSchedulerDown|NodeClockNotSynchronising|InfoInhibitor|TargetDown'
+        groupInterval: 5m
+        groupWait: 30s
+        receiver: null-notifications
+        repeatInterval: 4h
+        continue: false
+      - groupBy:
+          - alertname
+        matchers:
+          - matchType: =~
+            name: alertname
+            value: .+
+        groupInterval: 5m
+        groupWait: 30s
+        receiver: discord-notifications
+        repeatInterval: 4h
+        continue: false
