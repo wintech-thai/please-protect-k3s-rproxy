@@ -57,10 +57,10 @@ spec:
               value: "please-protect-rproxy-data-plane"
 
             - name: GIT_SOURCE_REPO2
-              value: ""
+              value: "" # Skip control plane
 
             - name: GIT_SOURCE_REPO3
-              value: ""
+              value: "" # Skip control plane
 
 
             - name: GIT_SOURCE_REF_TYPE1
