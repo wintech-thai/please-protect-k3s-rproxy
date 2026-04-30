@@ -15,8 +15,8 @@ if [ "$MODE" = "dev" ]; then
   #sed -i "s|^\([[:space:]]*\)repoURL: .*|\1repoURL: ${CTRL_PLANE_REMOTE_REPO}|g" argocd-bootstrap-control-plane-dev.yaml
   #sed -i "s|^\([[:space:]]*\)repoURL: .*|\1repoURL: ${CTRL_PLANE_REMOTE_REPO}|g" argocd-bootstrap-control-plane-prod.yaml
 
-  echo "Deploying DEV control plane"
-  kubectl apply -f argocd-bootstrap-control-plane-dev.yaml
+  #echo "Deploying DEV control plane"
+  #kubectl apply -f argocd-bootstrap-control-plane-dev.yaml
 fi
 
 #echo "Deploying PROD control plane"
@@ -38,6 +38,7 @@ kubectl apply -f ${YAML_FILE}.tmp
 
 # Sync code จาก remote มาที่ local
 # TODO : กำหนดเวอร์ชันของ data-plane, control-plane ที่จะ sync ได้
+# TODO : ปรับ config ได้ว่าจะ sync  control-plane ด้วยหรือไม่
 kubectl apply -f git-sync-job.yaml
 
 cd ..

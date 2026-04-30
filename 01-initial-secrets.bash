@@ -34,3 +34,32 @@ kubectl create secret generic gitea-admin-secret \
   --from-literal=password=${GIT_PASSWORD} \
   --from-literal=email=admin@example.com \
   --dry-run=client -o yaml | kubectl apply -f -
+
+
+# สร้าง pre-set secret สำหรับที่ต้องกำหนดค่าเริ่มต้นเองจาก .env
+SRC_FILE=.env
+SECRET=initial-secret-preset
+TMP_FILE=/tmp/${SECRET}.tmp
+
+cat <<END > "${TMP_FILE}"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ${SECRET}
+type: Opaque
+data:
+END
+
+cat ${SRC_FILE} | while read line
+do
+  regex="^(.+?)=(.+)$"
+  if [[ $line =~ $regex ]]; then
+
+    KEY=$(echo -e "$line" | perl -0777 -ne 'print $1 if /^(.+?)=(.+)$/')
+    VALUE=$(echo -e "$line" | perl -0777 -ne 'print $2 if /^(.+?)=(.+)$/')
+
+    echo "  ${KEY}: $(echo -n "${VALUE}" | base64 -w0)" >> ${TMP_FILE}
+  fi
+done
+
+kubectl apply -f ${TMP_FILE}
