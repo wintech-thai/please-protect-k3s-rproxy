@@ -10,7 +10,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: git-sync
-          image: asia-southeast1-docker.pkg.dev/its-artifact-commons/utils/git-sync:develop-8528af8 #v0.0.1
+          image: asia-southeast1-docker.pkg.dev/its-artifact-commons/utils/git-sync:v0.0.2
           command:
             - /bin/sh
             - -c
