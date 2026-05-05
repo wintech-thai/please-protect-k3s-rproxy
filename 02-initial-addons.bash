@@ -20,3 +20,6 @@ kubectl apply -f ${SRC_FILE}
 
 SRC_FILE=00-configs/addons-gitea.yaml
 kubectl apply -f ${SRC_FILE}
+
+SRC_FILE=00-configs/cluster-issuer.yaml
+kubectl apply -f ${SRC_FILE}
